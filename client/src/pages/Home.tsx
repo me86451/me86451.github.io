@@ -172,6 +172,9 @@ export default function Home() {
               <p className="text-sm text-muted-foreground">
                 複数の自販機を登録し、商品ごとに在庫を管理。PayPay連携で決済も簡単に。
               </p>
+              <p className="text-xs text-muted-foreground/70 mt-2">
+                ※ 販売者として使用する場合はPayPay登録が必要です
+              </p>
             </CardContent>
           </Card>
 
