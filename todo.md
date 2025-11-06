@@ -8,5 +8,7 @@
 - [x] 機能紹介セクション実装
 - [x] フッター実装
 - [x] レスポンシブデザイン対応
-- [ ] GitHubリポジトリ作成
-- [ ] GitHub Pages設定とデプロイ
+- [x] GitHubリポジトリ作成
+- [x] GitHub Pages設定とデプロイ
+
+- [ ] GitHub Pagesでサイトが表示されない問題を修正
