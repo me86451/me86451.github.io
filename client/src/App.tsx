@@ -8,7 +8,7 @@ import Home from "./pages/Home";
 
 function Router() {
   return (
-    <WouterRouter base="/vendx-website">
+    <WouterRouter>
       <Switch>
         <Route path={"/"} component={Home} />
         <Route path={"/404"} component={NotFound} />

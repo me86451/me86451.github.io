@@ -87,7 +87,7 @@ export default function Home() {
               VENDX
             </span>
           </div>
-          <nav className="flex items-center gap-6">
+          <nav className="hidden md:flex items-center gap-6">
             <a href="#commands" className="text-sm font-medium hover:text-primary transition-colors">
               コマンド
             </a>
@@ -100,11 +100,23 @@ export default function Home() {
               </a>
             </Button>
           </nav>
+          <Button asChild className="md:hidden">
+            <a href={inviteUrl} target="_blank" rel="noopener noreferrer">
+              導入
+            </a>
+          </Button>
         </div>
       </header>
 
       {/* Hero Section */}
-      <section className="container py-24 md:py-32">
+      <section className="relative container py-24 md:py-32 overflow-hidden">
+        {/* Floating particles */}
+        <div className="absolute inset-0 overflow-hidden pointer-events-none">
+          <div className="absolute top-1/4 left-1/4 w-2 h-2 bg-primary/30 rounded-full animate-ping" style={{animationDuration: '3s'}} />
+          <div className="absolute top-1/3 right-1/3 w-3 h-3 bg-accent/20 rounded-full animate-pulse" style={{animationDuration: '4s'}} />
+          <div className="absolute bottom-1/4 left-1/3 w-2 h-2 bg-secondary/25 rounded-full animate-ping" style={{animationDuration: '5s'}} />
+          <div className="absolute top-2/3 right-1/4 w-3 h-3 bg-primary/20 rounded-full animate-pulse" style={{animationDuration: '3.5s'}} />
+        </div>
         <div className="grid lg:grid-cols-2 gap-12 items-center">
           <div className="space-y-6">
             <h1 className="text-4xl md:text-6xl font-bold leading-tight">
@@ -117,7 +129,7 @@ export default function Home() {
             <p className="text-lg text-muted-foreground max-w-xl">
               VENDXは自販機システム、PayPay連携、チケット管理など、サーバー運営に必要な機能を統合したDiscord BOTです。
             </p>
-            <div className="flex gap-4">
+            <div className="flex flex-col sm:flex-row gap-4">
               <Button size="lg" asChild className="shadow-lg hover:shadow-xl transition-shadow">
                 <a href={inviteUrl} target="_blank" rel="noopener noreferrer">
                   今すぐ導入する
