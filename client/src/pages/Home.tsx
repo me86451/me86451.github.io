@@ -253,10 +253,15 @@ export default function Home() {
       <footer className="border-t border-border/50 py-8 glass-effect">
         <div className="container text-center text-sm text-muted-foreground">
           <div className="flex items-center justify-center gap-3">
-            <img src="/creator-icon.jpg" alt="Creator" className="h-8 w-8 rounded-full" />
+            <img src="/VENDX/creator-icon.jpg" alt="Creator" className="h-8 w-8 rounded-full" />
             <p>Built by @me10104</p>
           </div>
           <p className="mt-2">VENDX Discord BOT</p>
+          <p className="mt-2">
+            <a href="https://discord.gg/3bw5D6vKV9" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">
+              サポートサーバー
+            </a>
+          </p>
         </div>
       </footer>
     </div>
