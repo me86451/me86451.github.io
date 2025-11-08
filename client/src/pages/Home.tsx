@@ -82,7 +82,7 @@ export default function Home() {
       <header className="glass-effect sticky top-0 z-50 border-b border-border/50">
         <div className="container flex h-16 items-center justify-between">
           <div className="flex items-center gap-3">
-            <img src="/bot-icon.jpg" alt="VENDX" className="h-10 w-10 rounded-full shadow-lg" />
+            <img src="/VENDX/bot-icon.jpg" alt="VENDX" className="h-10 w-10 rounded-full shadow-lg" />
             <span className="text-xl font-bold bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
               VENDX
             </span>
