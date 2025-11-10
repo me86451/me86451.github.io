@@ -5,219 +5,204 @@ type Edition = "standard" | "pro";
 
 export default function Home() {
   const [edition, setEdition] = useState<Edition>("standard");
-  const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
   const [scrollY, setScrollY] = useState(0);
   
   const inviteUrl = "https://discord.com/oauth2/authorize?client_id=1422959102300127292&permissions=8&integration_type=0&scope=bot";
 
   useEffect(() => {
-    const handleMouseMove = (e: MouseEvent) => {
-      setMousePos({ x: e.clientX, y: e.clientY });
-    };
-    
-    const handleScroll = () => {
-      setScrollY(window.scrollY);
-    };
-
-    window.addEventListener('mousemove', handleMouseMove);
+    const handleScroll = () => setScrollY(window.scrollY);
     window.addEventListener('scroll', handleScroll);
-    
-    return () => {
-      window.removeEventListener('mousemove', handleMouseMove);
-      window.removeEventListener('scroll', handleScroll);
-    };
+    return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
   const toggleEdition = () => {
     setEdition(prev => prev === "standard" ? "pro" : "standard");
   };
 
-  const editionConfig = {
+  const config = {
     standard: {
       icon: "/VENDX/icon-standard.png",
-      name: "VENDX",
-      subtitle: "STANDARD",
-      gradient: "from-cyan-500 via-blue-500 to-purple-600",
-      accentColor: "#06b6d4",
+      theme: "cyan",
+      gradient: "from-cyan-400 to-blue-500",
+      title: "VENDX STANDARD",
+      tagline: "Discord サーバー運営の、新しいスタンダード",
       features: [
-        { title: "自販機システム", desc: "完全自動化された販売・在庫管理", icon: "🏪" },
-        { title: "パネル管理", desc: "直感的な認証・役職・チケット管理", icon: "⚡" },
-        { title: "モデレーション", desc: "強力なサーバー管理ツール", icon: "🛡️" }
+        {
+          label: "自販機システム",
+          desc: "商品の販売から在庫管理まで完全自動化。PayPay連携で決済もスムーズに。",
+          note: "※販売者として使用する場合は /paypay登録 が必要です"
+        },
+        {
+          label: "パネル管理",
+          desc: "認証、役職付与、チケット管理を直感的なパネルで一元管理。",
+          note: null
+        },
+        {
+          label: "モデレーション",
+          desc: "BAN、タイムアウト、メッセージ削除など、サーバーの秩序を保つ強力なツール。",
+          note: null
+        }
       ]
     },
     pro: {
       icon: "/VENDX/icon-pro.png",
-      name: "VENDX",
-      subtitle: "PRO",
-      gradient: "from-orange-500 via-red-500 to-pink-600",
-      accentColor: "#f97316",
+      theme: "orange",
+      gradient: "from-orange-400 to-red-500",
+      title: "VENDX PRO",
+      tagline: "プロフェッショナル運営のための、プレミアム体験",
       features: [
-        { title: "先行アクセス", desc: "最新機能をいち早く体験", icon: "🚀" },
-        { title: "優先サポート", desc: "24/7専用サポートチャンネル", icon: "💎" },
-        { title: "即時アップデート", desc: "フィードバック最優先反映", icon: "⚡" }
+        {
+          label: "先行アクセス",
+          desc: "開発中の新機能をいち早く体験。常に最先端の機能を利用可能。",
+          note: null
+        },
+        {
+          label: "優先サポート",
+          desc: "専用サポートチャンネルで24時間365日対応。問題発生時も即座に解決。",
+          note: null
+        },
+        {
+          label: "即時アップデート",
+          desc: "フィードバックを最優先で反映。迅速な改善とアップデートを提供。",
+          note: null
+        }
       ]
     }
   };
 
-  const config = editionConfig[edition];
-
-  const parallaxOffset = scrollY * 0.5;
-  const cursorGlow = {
-    background: `radial-gradient(600px at ${mousePos.x}px ${mousePos.y}px, ${config.accentColor}15, transparent 80%)`
-  };
+  const current = config[edition];
+  const opacity = Math.min(scrollY / 300, 1);
 
   return (
-    <div className="min-h-screen bg-black text-white overflow-hidden relative">
-      {/* Cursor Glow Effect */}
-      <div 
-        className="fixed inset-0 pointer-events-none transition-all duration-300 z-0"
-        style={cursorGlow}
-      />
-      
-      {/* Animated Grid Background */}
-      <div className="fixed inset-0 z-0">
+    <div className="min-h-screen bg-black text-white">
+      {/* Animated Background */}
+      <div className="fixed inset-0 overflow-hidden pointer-events-none">
         <div 
-          className="absolute inset-0 opacity-20"
-          style={{
-            backgroundImage: `
-              linear-gradient(${config.accentColor}22 1px, transparent 1px),
-              linear-gradient(90deg, ${config.accentColor}22 1px, transparent 1px)
-            `,
-            backgroundSize: '50px 50px',
-            transform: `translateY(${parallaxOffset}px)`
-          }}
+          className={`absolute inset-0 bg-gradient-to-br ${current.gradient} opacity-5 transition-all duration-1000`}
+          style={{ transform: `scale(${1 + scrollY * 0.0005})` }}
         />
-      </div>
-
-      {/* Floating Orbs */}
-      <div className="fixed inset-0 z-0 overflow-hidden pointer-events-none">
-        <div 
-          className={`absolute w-96 h-96 rounded-full blur-3xl opacity-30 bg-gradient-to-r ${config.gradient}`}
-          style={{
-            top: '10%',
-            left: '20%',
-            transform: `translate(${mousePos.x * 0.02}px, ${mousePos.y * 0.02}px)`
-          }}
-        />
-        <div 
-          className={`absolute w-96 h-96 rounded-full blur-3xl opacity-20 bg-gradient-to-r ${config.gradient}`}
-          style={{
-            bottom: '20%',
-            right: '10%',
-            transform: `translate(${-mousePos.x * 0.03}px, ${-mousePos.y * 0.03}px)`
-          }}
-        />
+        <div className="absolute inset-0" style={{
+          backgroundImage: `radial-gradient(circle at 50% 50%, ${current.theme === 'cyan' ? '#06b6d420' : '#f9731620'} 1px, transparent 1px)`,
+          backgroundSize: '40px 40px',
+          transform: `translateY(${scrollY * 0.3}px)`
+        }} />
       </div>
 
       <div className="relative z-10">
         {/* Header */}
-        <header className="fixed top-0 left-0 right-0 z-50 backdrop-blur-xl bg-black/30 border-b border-white/10">
+        <header className="fixed top-0 left-0 right-0 z-50 transition-all duration-300" style={{
+          backgroundColor: `rgba(0, 0, 0, ${opacity * 0.8})`,
+          backdropFilter: opacity > 0 ? 'blur(20px)' : 'none',
+          borderBottom: opacity > 0 ? '1px solid rgba(255,255,255,0.1)' : 'none'
+        }}>
           <div className="max-w-7xl mx-auto px-6 lg:px-8">
-            <div className="flex h-20 items-center justify-between">
+            <div className="flex h-16 items-center justify-between">
               <button 
                 onClick={toggleEdition}
-                className="group flex items-center gap-4 transition-all hover:scale-105"
+                className="flex items-center gap-3 group"
               >
                 <div className="relative">
-                  <div className={`absolute inset-0 rounded-2xl bg-gradient-to-r ${config.gradient} blur-xl opacity-50 group-hover:opacity-100 transition-opacity`} />
                   <img 
-                    src={config.icon}
-                    alt={config.name}
-                    className="relative h-14 w-14 rounded-2xl shadow-2xl"
+                    src={current.icon}
+                    alt="VENDX"
+                    className="h-10 w-10 rounded-lg transition-transform group-hover:scale-110"
                   />
+                  <div className={`absolute inset-0 rounded-lg bg-gradient-to-br ${current.gradient} opacity-0 group-hover:opacity-50 blur-md transition-opacity`} />
                 </div>
-                <div className="text-left">
-                  <div className="text-2xl font-black tracking-tight">{config.name}</div>
-                  <div className={`text-xs font-bold bg-gradient-to-r ${config.gradient} bg-clip-text text-transparent`}>
-                    {config.subtitle}
-                  </div>
+                <div>
+                  <div className="text-sm font-bold">{current.title}</div>
+                  <div className="text-xs text-gray-500">クリックで切替</div>
                 </div>
               </button>
               
-              <Button 
-                asChild
-                className={`bg-gradient-to-r ${config.gradient} text-white font-bold px-8 py-6 text-lg shadow-2xl hover:shadow-3xl transition-all hover:scale-105`}
-              >
-                <a href={inviteUrl} target="_blank" rel="noopener noreferrer">
-                  導入する
-                </a>
-              </Button>
+              <nav className="hidden md:flex items-center gap-8">
+                <a href="#features" className="text-sm hover:text-gray-300 transition">機能</a>
+                <a href="#commands" className="text-sm hover:text-gray-300 transition">コマンド</a>
+                <Button 
+                  asChild
+                  className={`bg-gradient-to-r ${current.gradient} hover:opacity-90 transition-opacity`}
+                >
+                  <a href={inviteUrl} target="_blank" rel="noopener noreferrer">
+                    導入する
+                  </a>
+                </Button>
+              </nav>
             </div>
           </div>
         </header>
 
         {/* Hero */}
-        <section className="pt-40 pb-32 px-6 lg:px-8 relative">
-          <div className="max-w-6xl mx-auto">
-            <div className="text-center space-y-8">
-              <div 
-                className="inline-block"
-                style={{ transform: `translateY(${-scrollY * 0.2}px)` }}
-              >
-                <div className={`inline-block px-6 py-2 rounded-full bg-gradient-to-r ${config.gradient} bg-opacity-20 border border-white/20 backdrop-blur-sm`}>
-                  <span className="text-sm font-bold">Next Generation Discord Bot</span>
-                </div>
-              </div>
-              
-              <h1 
-                className="text-7xl md:text-9xl font-black leading-none"
-                style={{ transform: `translateY(${-scrollY * 0.1}px)` }}
-              >
-                <span className={`bg-gradient-to-r ${config.gradient} bg-clip-text text-transparent`}>
-                  Discord
-                </span>
-                <br />
-                <span className="text-white">サーバーを</span>
-                <br />
-                <span className={`bg-gradient-to-r ${config.gradient} bg-clip-text text-transparent`}>
-                  次のレベルへ
-                </span>
+        <section className="min-h-screen flex items-center justify-center px-6 lg:px-8">
+          <div className="max-w-5xl mx-auto text-center space-y-8">
+            <div className="space-y-4">
+              <h1 className="text-6xl md:text-8xl font-black tracking-tight">
+                {current.tagline}
               </h1>
-              
-              <p className="text-xl md:text-2xl text-gray-400 max-w-3xl mx-auto leading-relaxed">
-                自販機システム、PayPay連携、チケット管理。
+              <p className="text-xl md:text-2xl text-gray-400 max-w-3xl mx-auto">
+                自販機、PayPay連携、チケット管理、モデレーション。
                 <br />
-                サーバー運営に必要なすべてを、ひとつに。
+                サーバー運営に必要なすべてを統合。
               </p>
-
-              <div className="flex flex-col sm:flex-row gap-6 justify-center pt-8">
-                <Button 
-                  asChild
-                  size="lg"
-                  className={`bg-gradient-to-r ${config.gradient} text-white font-bold text-xl px-12 py-8 shadow-2xl hover:shadow-3xl transition-all hover:scale-110`}
-                >
-                  <a href={inviteUrl} target="_blank" rel="noopener noreferrer">
-                    今すぐ導入
-                  </a>
-                </Button>
-              </div>
+            </div>
+            
+            <div className="flex flex-col sm:flex-row gap-4 justify-center pt-8">
+              <Button 
+                asChild
+                size="lg"
+                className={`bg-gradient-to-r ${current.gradient} text-lg px-8 py-6 hover:opacity-90 transition-opacity`}
+              >
+                <a href={inviteUrl} target="_blank" rel="noopener noreferrer">
+                  今すぐ導入
+                </a>
+              </Button>
+              <Button 
+                asChild
+                size="lg"
+                variant="outline"
+                className="text-lg px-8 py-6 border-white/20 hover:bg-white/5"
+              >
+                <a href="https://discord.gg/3bw5D6vKV9" target="_blank" rel="noopener noreferrer">
+                  サポートサーバー
+                </a>
+              </Button>
             </div>
           </div>
         </section>
 
         {/* Features */}
-        <section className="py-32 px-6 lg:px-8 relative">
-          <div className="max-w-7xl mx-auto">
-            <h2 className="text-5xl md:text-6xl font-black text-center mb-20">
-              <span className={`bg-gradient-to-r ${config.gradient} bg-clip-text text-transparent`}>
-                主な機能
-              </span>
+        <section id="features" className="py-32 px-6 lg:px-8">
+          <div className="max-w-6xl mx-auto">
+            <h2 className="text-4xl md:text-5xl font-black mb-16 text-center">
+              主な機能
             </h2>
             
-            <div className="grid md:grid-cols-3 gap-8">
-              {config.features.map((feature, idx) => (
+            <div className="space-y-24">
+              {current.features.map((feature, idx) => (
                 <div 
                   key={idx}
-                  className="group relative"
+                  className="grid md:grid-cols-2 gap-12 items-center"
                   style={{
-                    transform: `translateY(${-scrollY * 0.05 * (idx + 1)}px)`
+                    flexDirection: idx % 2 === 0 ? 'row' : 'row-reverse'
                   }}
                 >
-                  <div className={`absolute inset-0 rounded-3xl bg-gradient-to-r ${config.gradient} opacity-0 group-hover:opacity-20 blur-xl transition-all`} />
-                  <div className="relative p-8 rounded-3xl bg-white/5 backdrop-blur-sm border border-white/10 hover:border-white/30 transition-all hover:scale-105">
-                    <div className="text-6xl mb-6">{feature.icon}</div>
-                    <h3 className="text-3xl font-bold mb-4">{feature.title}</h3>
-                    <p className="text-gray-400 text-lg leading-relaxed">{feature.desc}</p>
+                  <div className={idx % 2 === 0 ? '' : 'md:order-2'}>
+                    <div className={`text-sm font-bold text-transparent bg-clip-text bg-gradient-to-r ${current.gradient} mb-4`}>
+                      0{idx + 1}
+                    </div>
+                    <h3 className="text-3xl md:text-4xl font-bold mb-6">
+                      {feature.label}
+                    </h3>
+                    <p className="text-lg text-gray-400 leading-relaxed mb-4">
+                      {feature.desc}
+                    </p>
+                    {feature.note && (
+                      <p className="text-sm text-gray-500 italic">
+                        {feature.note}
+                      </p>
+                    )}
+                  </div>
+                  <div className={idx % 2 === 0 ? '' : 'md:order-1'}>
+                    <div className={`aspect-video rounded-2xl bg-gradient-to-br ${current.gradient} opacity-10`} />
                   </div>
                 </div>
               ))}
@@ -225,47 +210,56 @@ export default function Home() {
           </div>
         </section>
 
-        {/* Stats */}
-        <section className="py-32 px-6 lg:px-8 relative">
-          <div className="max-w-5xl mx-auto">
-            <div className="grid grid-cols-3 gap-8 text-center">
-              <div className="space-y-4">
-                <div className={`text-6xl md:text-8xl font-black bg-gradient-to-r ${config.gradient} bg-clip-text text-transparent`}>
-                  34
+        {/* Commands */}
+        <section id="commands" className="py-32 px-6 lg:px-8 bg-white/5">
+          <div className="max-w-6xl mx-auto">
+            <div className="text-center mb-16">
+              <h2 className="text-4xl md:text-5xl font-black mb-4">
+                34種類のコマンド
+              </h2>
+              <p className="text-xl text-gray-400">
+                あらゆるサーバー運営シーンに対応
+              </p>
+            </div>
+            
+            <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+              {[
+                { name: "自販機", count: 11 },
+                { name: "パネル", count: 7 },
+                { name: "モデレーション", count: 3 },
+                { name: "サーバー管理", count: 7 },
+                { name: "ユーティリティ", count: 4 },
+                { name: "連携", count: 2 }
+              ].map((cat, idx) => (
+                <div 
+                  key={idx}
+                  className="p-6 rounded-xl bg-white/5 border border-white/10 hover:border-white/20 transition-all"
+                >
+                  <div className="flex items-center justify-between">
+                    <span className="text-lg font-bold">{cat.name}</span>
+                    <span className={`text-2xl font-black text-transparent bg-clip-text bg-gradient-to-r ${current.gradient}`}>
+                      {cat.count}
+                    </span>
+                  </div>
                 </div>
-                <div className="text-xl text-gray-400">コマンド</div>
-              </div>
-              <div className="space-y-4">
-                <div className={`text-6xl md:text-8xl font-black bg-gradient-to-r ${config.gradient} bg-clip-text text-transparent`}>
-                  24/7
-                </div>
-                <div className="text-xl text-gray-400">稼働</div>
-              </div>
-              <div className="space-y-4">
-                <div className={`text-6xl md:text-8xl font-black bg-gradient-to-r ${config.gradient} bg-clip-text text-transparent`}>
-                  ∞
-                </div>
-                <div className="text-xl text-gray-400">可能性</div>
-              </div>
+              ))}
             </div>
           </div>
         </section>
 
         {/* CTA */}
-        <section className="py-32 px-6 lg:px-8 relative">
-          <div className="max-w-4xl mx-auto text-center space-y-12">
-            <h2 className="text-6xl md:text-7xl font-black">
-              <span className={`bg-gradient-to-r ${config.gradient} bg-clip-text text-transparent`}>
-                始めよう
-              </span>
+        <section className="py-32 px-6 lg:px-8">
+          <div className="max-w-4xl mx-auto text-center space-y-8">
+            <h2 className="text-5xl md:text-6xl font-black">
+              今すぐ始める
             </h2>
-            <p className="text-2xl text-gray-400">
-              あなたのDiscordサーバーを、今すぐアップグレード
+            <p className="text-xl text-gray-400">
+              あなたのDiscordサーバーを次のレベルへ
             </p>
             <Button 
               asChild
               size="lg"
-              className={`bg-gradient-to-r ${config.gradient} text-white font-bold text-2xl px-16 py-10 shadow-2xl hover:shadow-3xl transition-all hover:scale-110`}
+              className={`bg-gradient-to-r ${current.gradient} text-xl px-12 py-8 hover:opacity-90 transition-opacity`}
             >
               <a href={inviteUrl} target="_blank" rel="noopener noreferrer">
                 BOTを導入する
@@ -282,18 +276,28 @@ export default function Home() {
                 <img 
                   src="/VENDX/creator-icon.jpg"
                   alt="Creator"
-                  className="h-12 w-12 rounded-full ring-2 ring-white/20"
+                  className="h-10 w-10 rounded-full"
                 />
-                <span className="text-gray-400">Built by @me10104</span>
+                <span className="text-sm text-gray-400">Built by @me10104</span>
               </div>
-              <a 
-                href="https://discord.gg/3bw5D6vKV9"
-                target="_blank"
-                rel="noopener noreferrer"
-                className={`font-bold bg-gradient-to-r ${config.gradient} bg-clip-text text-transparent hover:opacity-80 transition`}
-              >
-                サポートサーバー →
-              </a>
+              <div className="flex items-center gap-8">
+                <a 
+                  href="https://discord.gg/3bw5D6vKV9"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-sm hover:text-gray-300 transition"
+                >
+                  サポートサーバー
+                </a>
+                <a 
+                  href={inviteUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className={`text-sm font-bold text-transparent bg-clip-text bg-gradient-to-r ${current.gradient} hover:opacity-80 transition`}
+                >
+                  導入する →
+                </a>
+              </div>
             </div>
           </div>
         </footer>
