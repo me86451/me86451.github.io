@@ -176,34 +176,26 @@ export default function Home() {
               主な機能
             </h2>
             
-            <div className="space-y-24">
+            <div className="grid md:grid-cols-3 gap-12">
               {current.features.map((feature, idx) => (
                 <div 
                   key={idx}
-                  className="grid md:grid-cols-2 gap-12 items-center"
-                  style={{
-                    flexDirection: idx % 2 === 0 ? 'row' : 'row-reverse'
-                  }}
+                  className="space-y-6"
                 >
-                  <div className={idx % 2 === 0 ? '' : 'md:order-2'}>
-                    <div className={`text-sm font-bold text-transparent bg-clip-text bg-gradient-to-r ${current.gradient} mb-4`}>
-                      0{idx + 1}
-                    </div>
-                    <h3 className="text-3xl md:text-4xl font-bold mb-6">
-                      {feature.label}
-                    </h3>
-                    <p className="text-lg text-gray-400 leading-relaxed mb-4">
-                      {feature.desc}
+                  <div className={`text-sm font-bold text-transparent bg-clip-text bg-gradient-to-r ${current.gradient}`}>
+                    0{idx + 1}
+                  </div>
+                  <h3 className="text-3xl font-bold">
+                    {feature.label}
+                  </h3>
+                  <p className="text-lg text-gray-400 leading-relaxed">
+                    {feature.desc}
+                  </p>
+                  {feature.note && (
+                    <p className="text-sm text-gray-500 italic">
+                      {feature.note}
                     </p>
-                    {feature.note && (
-                      <p className="text-sm text-gray-500 italic">
-                        {feature.note}
-                      </p>
-                    )}
-                  </div>
-                  <div className={idx % 2 === 0 ? '' : 'md:order-1'}>
-                    <div className={`aspect-video rounded-2xl bg-gradient-to-br ${current.gradient} opacity-10`} />
-                  </div>
+                  )}
                 </div>
               ))}
             </div>
