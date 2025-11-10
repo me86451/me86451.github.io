@@ -9,7 +9,12 @@ export default function Home() {
   const [scrollY, setScrollY] = useState(0);
   const [expandedCategory, setExpandedCategory] = useState<string | null>(null);
   
-  const inviteUrl = "https://discord.com/oauth2/authorize?client_id=1422959102300127292&permissions=8&integration_type=0&scope=bot";
+  const inviteUrls = {
+    standard: "https://discord.com/oauth2/authorize?client_id=1422959102300127292&permissions=8&integration_type=0&scope=bot",
+    pro: "https://discord.com/oauth2/authorize?client_id=1422959680363171970&permissions=8&integration_type=0&scope=bot"
+  };
+  
+  const inviteUrl = inviteUrls[edition];
 
   useEffect(() => {
     const handleScroll = () => setScrollY(window.scrollY);
